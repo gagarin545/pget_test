@@ -1,0 +1,12 @@
+TIT=1
+PORT=5432
+PORT_SEND=35140
+START=7
+STOP=21
+INTERVAL=7
+INTERVAL_L=40
+FIREFOX=/usr/bin/geckodriver
+LOGIN=ch_gagarin
+PASSWORD=Pfcflf56=
+MC-old=#slcts-slct_acc-dsp_f-tree-0_1_0-txt_n
+MC=#slcts-slct_acc-dsp_f-tree-0-txt_n
