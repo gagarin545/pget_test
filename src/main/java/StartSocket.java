@@ -4,6 +4,7 @@ import java.net.Socket;
 import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 class StartSocket {
     static StartSocket start_soc;
@@ -43,13 +44,16 @@ class StartSocket {
 
         Array kodSity = get_incident.get_worker(o);
 
-        if(  kodSity == null)
+        if(  kodSity == null) {
             o.sendmessage("Вы не авторизованы.\n Введите ваше имя и инициалы - ваш город\n и поставте перед ним звездочку.\n Например: *Петров К.С.-Аша");
+            System.out.println("Нет авторизации");
+        }
         else {
             o.sendmessage("&*" + o.getMyName());
 
             for (ClientThread c : ClientList)
-                System.out.println(c.getT().getName());
+                System.out.println("imei " + c.getT().getName() + " myname " + c.getMyName() + " Tit " + c.getKod_tit() + "  " + c.getDateConnect());
+            System.out.println("Итого ->" + ClientList.size());
             return kodSity;
         }
         return null;

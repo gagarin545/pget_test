@@ -7,10 +7,7 @@ import java.rmi.NotBoundException;
 import java.sql.Array;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class ClientThread implements Runnable {
@@ -23,7 +20,7 @@ public class ClientThread implements Runnable {
     private Array codSity;
     private String myname;
     private Integer kod_tit;
-
+    private Date calendar = Calendar.getInstance().getTime();
     ClientThread(Socket s ) {   //конструктор,в который мы передаем
         this.s = s;
 
@@ -55,18 +52,22 @@ public class ClientThread implements Runnable {
                     if (message.startsWith("#"))
                         switch (message.substring(0, 4)) {
                             case "#reg":
-                                System.out.println(message);
+                                System.out.println(message + " взял в работу " + p.getMyName());
                                 get_incident.get_work_incident(p, message.substring(4));
                                 break;
                             case "#usr":
                                 t.setName(message.substring(4, message.indexOf('#', 4)));
                                 kod_tit = Integer.valueOf(message.substring(message.lastIndexOf('#') + 1));
                                 codSity = StartSocket.registrationObs(p);
-                                if ( codSity == null) break;
-                                else    System.out.println(codSity);
+                                if ( codSity == null)
+                                    break;
+                                else
+                                    System.out.println(codSity);
                             case "#inc":
-                                sendmessage("&~Вкл");
-                                get_incident.select(p, codSity);
+                                if(codSity != null) {
+                                    sendmessage("&~Вкл");
+                                    get_incident.select(p, codSity);
+                                }
                                 break;
                             case "#get":
                                 StartSocket.start_soc.notifyall(message.substring(4));
@@ -80,8 +81,14 @@ public class ClientThread implements Runnable {
                                 }
                         }
                     else {
-                        if (message.startsWith("*"))
+                        if (message.startsWith("*")) {
                             get_incident.registration(message.substring(1), p);
+                            codSity = StartSocket.registrationObs(p);
+                            if ( codSity == null)
+                                break;
+                            else
+                                System.out.println(codSity);
+                        }
                         System.out.println(formatTime.format(dat) + message);
                         StartSocket.start_soc.notifyall(formatTime.format(dat) + message );
                     }
@@ -99,13 +106,14 @@ public class ClientThread implements Runnable {
     Thread getT()   {       return t;       }
 
     void putMyName(String MyName) { this.myname = MyName;}
+    Date getDateConnect() { return calendar; }
     String getMyName() { return myname;     }
     Integer getKod_tit() { return kod_tit;  }
 
 
     // функция отправки клиенту сообщения
     synchronized void sendmessage(String s) {        out.println(s);
-    System.out.println(s);
+    //  System.out.println(s);
     }
 
 }

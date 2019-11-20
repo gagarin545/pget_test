@@ -73,7 +73,7 @@ class testShpd {
 
         System.out.println("list=" +  list);
         switch (list.get(0)) {
-            case "FTTx":
+            // case "FTTx":
             case "BShPD":
             case "N.A.":
                 return "|Результат : услуга "+ r.substring(0, r.indexOf(';')) +" пока не тестируется.";
